@@ -367,11 +367,18 @@ st.sidebar.image("Images_App/faculty_of_App;ied_Medical_Sciences.jpeg")
 st.sidebar.markdown("# Faculty of Health Applied Medical Science")
 st.sidebar.markdown("## **Supervisor:** Dr. Diana Abbas Al Sherif")
 st.sidebar.markdown("**Team Members:**")
-st.sidebar.markdown("1. Nermen Khaled Ahmed")
-st.sidebar.markdown("2. Shahd Amin AbdElwhab")
-st.sidebar.markdown("3. Yousef Mohamed Abdalaal")
+st.sidebar.markdown("1. Yousef Mohamed Abdalaal ")
+st.sidebar.markdown("2. Nermen Khaled Ahmed")
+st.sidebar.markdown("3. Shahd Amin AbdElwhab")
 st.sidebar.markdown("4. Farah Khaled mohamed")
 st.sidebar.markdown("5. Manar Mohamed Farid")
+
+
+st.sidebar.markdown("")
+
+st.sidebar.markdown("**Team Members:**")
+st.sidebar.markdown("dr:Yousef Mohamed Abdalaal")
+st.sidebar.image("Images_App/Yousef.jpeg")
 
 
 if tab == "🧠 MRI":
