@@ -85,4 +85,4 @@ urllib3==2.4.0
 uvicorn==0.34.2
 watchdog==6.0.0
 websockets==15.0.1
-opencv-python
+opencv-python==4.11.0.86 
