@@ -327,28 +327,28 @@ def CT_UI():
         st.write(f"**Predicted Class:** {main_class_names[Mian_predicted_class]}")
         st.write(f"**Confidence:** {confidence:.4f}")
         
-        # # If the main prediction is "Stroke", run the sub-classifier
-        # if main_class_names[Mian_predicted_class] == 'Stroke':
-        #     st.write("**Sub-Class Classifier:**")
-        #     sub_model = Sub_Class_CNNModel_CT()
-        #     sub_model.load_state_dict(torch.load('CT/cnn_model_sub_class.pth', map_location=torch.device('cpu')))
-        #     sub_model.eval()
-        #     sub_class_names = ['hemorrhagic', 'ischaemic']
-        #     st.write("Loading Sub-Class Model...")
-        #     st.write("Classifying sub-classes...")
+        # If the main prediction is "Stroke", run the sub-classifier
+        if main_class_names[Mian_predicted_class] == 'Stroke':
+            st.write("**Sub-Class Classifier:**")
+            sub_model = Sub_Class_CNNModel_CT()
+            sub_model.load_state_dict(torch.load('CT/cnn_model_sub_class.pth', map_location=torch.device('cpu')))
+            sub_model.eval()
+            sub_class_names = ['hemorrhagic', 'ischaemic']
+            st.write("Loading Sub-Class Model...")
+            st.write("Classifying sub-classes...")
             
                 
-        #     with torch.no_grad():
-        #         output = sub_model(input_tensor)  
-        #         sub_prediction = torch.argmax(output, dim=1).item()
-        #         confidence = output[0][sub_prediction].item()
+            with torch.no_grad():
+                output = sub_model(input_tensor)  
+                sub_prediction = torch.argmax(output, dim=1).item()
+                confidence = output[0][sub_prediction].item()
 
 
-        #     sub_predicted_class = 1 if sub_prediction >= 0.5 else 0
-        #     confidence = sub_prediction if sub_predicted_class == 1 else 1 - sub_prediction
+            sub_predicted_class = 1 if sub_prediction >= 0.5 else 0
+            confidence = sub_prediction if sub_predicted_class == 1 else 1 - sub_prediction
             
-        #     st.write(f"**Sub-Predicted Class:** {sub_class_names[sub_predicted_class]}")
-        #     st.write(f"**Confidence:** {confidence:.4f}")
+            st.write(f"**Sub-Predicted Class:** {sub_class_names[sub_predicted_class]}")
+            st.write(f"**Confidence:** {confidence:.4f}")
             
         
 
