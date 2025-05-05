@@ -409,12 +409,6 @@ st.sidebar.markdown("dr:Yousef Mohamed Abdalaal")
 st.sidebar.image("Images_App/Yousef.jpeg")
 
 
-st.sidebar.markdown("")
-
-st.sidebar.markdown("**Team Members:**")
-st.sidebar.markdown("dr:Yousef Mohamed Abdalaal")
-st.sidebar.image("Images_App/Yousef.jpeg")
-
 if tab == "🧠 MRI":
     MRI_UI()
 elif tab == "🧠 CT":
