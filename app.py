@@ -296,6 +296,25 @@ def preprocess_image_CT(img, size=(224, 224)):
     img_tensor = img_tensor.unsqueeze(0)  # Add batch dimension
     return img_tensor
 
+
+def preprocess_image_sub_ct(img, size=(224, 224)):
+    """
+    Takes a PIL image and returns a normalized tensor with batch dimension.
+    Assumes input is RGB (3-channel) image.
+    """
+    if not isinstance(img, Image.Image):
+        raise ValueError("Input must be a PIL Image.")
+    
+    mean = [0.485, 0.456, 0.406]
+    std = [0.229, 0.224, 0.225] 
+    img = img.convert("RGB")  # Ensure 3 channels
+    transform = transforms.Compose([
+        transforms.Resize(size),
+        transforms.ToTensor(),
+        transforms.Normalize(mean, std)
+    ])
+    img_tensor = transform(img)
+    return img_tensor.unsqueeze(0) 
      
 def CT_UI():
     Main_model = EnhancedCNN_CT()
@@ -337,6 +356,12 @@ def CT_UI():
             st.write("Loading Sub-Class Model...")
             st.write("Classifying sub-classes...")
             
+            sub_pre_input_tensor = preprocess_image_sub_ct(image)
+   
+            with torch.no_grad():
+                sub_output = sub_model(sub_pre_input_tensor)  
+                sub_prediction = torch.argmax(sub_output, dim=1).item()
+                confidence = sub_output[0][sub_prediction].item()
                 
             with torch.no_grad():
                 output = sub_model(input_tensor)  
@@ -370,6 +395,9 @@ st.sidebar.markdown("**Team Members:**")
 st.sidebar.markdown("1. Yousef Mohamed Abdalaal ")
 st.sidebar.markdown("2. Nermen Khaled Ahmed")
 st.sidebar.markdown("3. Shahd Amin AbdElwhab")
+st.sidebar.markdown("1. Yousef Mohamed Abdalaal ")
+st.sidebar.markdown("2. Nermen Khaled Ahmed")
+st.sidebar.markdown("3. Shahd Amin AbdElwhab")
 st.sidebar.markdown("4. Farah Khaled mohamed")
 st.sidebar.markdown("5. Manar Mohamed Farid")
 
@@ -380,6 +408,12 @@ st.sidebar.markdown("**Team Members:**")
 st.sidebar.markdown("dr:Yousef Mohamed Abdalaal")
 st.sidebar.image("Images_App/Yousef.jpeg")
 
+
+st.sidebar.markdown("")
+
+st.sidebar.markdown("**Team Members:**")
+st.sidebar.markdown("dr:Yousef Mohamed Abdalaal")
+st.sidebar.image("Images_App/Yousef.jpeg")
 
 if tab == "🧠 MRI":
     MRI_UI()
