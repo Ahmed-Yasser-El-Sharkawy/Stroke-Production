@@ -296,6 +296,18 @@ def preprocess_image_CT(img, size=(224, 224)):
     img_tensor = img_tensor.unsqueeze(0)  # Add batch dimension
     return img_tensor
 
+def preprocess_image_CT(img, size=(224, 224)):
+    img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    detector = TextRegionDetector()
+    cropped, bbox = detector.crop_text_region(img_cv)
+    resized = cv2.resize(cropped, size)
+    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
+    transform = transforms.Compose([
+        transforms.ToTensor()
+    ])
+    img_tensor = transform(pil_img)
+    img_tensor = img_tensor.unsqueeze(0)
+    return img_tensor, bbox
 
 def preprocess_image_sub_ct(img, size=(224, 224)):
     """
