@@ -112,20 +112,7 @@ class TextRegionDetector:
             return image[y:y+h, x:x+w]
         return image
     
-class TextRegionDetector:
-    def __init__(self):
-        pass
-
-    def crop_text_region(self, img):
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        if contours:
-            x, y, w, h = cv2.boundingRect(contours[0])
-            return img[y:y+h, x:x+w], (x, y, w, h)
-        return img, (0, 0, img.shape[1], img.shape[0])
-
+    
 def preprocess_image_MRI(img, size=(224, 224)):
     img = img.convert('L')
     transform = transforms.Compose([
@@ -309,18 +296,6 @@ def preprocess_image_CT(img, size=(224, 224)):
     img_tensor = img_tensor.unsqueeze(0)  # Add batch dimension
     return img_tensor
 
-def preprocess_image_CT(img, size=(224, 224)):
-    img_cv = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-    detector = TextRegionDetector()
-    cropped, bbox = detector.crop_text_region(img_cv)
-    resized = cv2.resize(cropped, size)
-    pil_img = Image.fromarray(cv2.cvtColor(resized, cv2.COLOR_BGR2RGB))
-    transform = transforms.Compose([
-        transforms.ToTensor()
-    ])
-    img_tensor = transform(pil_img)
-    img_tensor = img_tensor.unsqueeze(0)
-    return img_tensor, bbox
 
 def preprocess_image_sub_ct(img, size=(224, 224)):
     """
@@ -358,17 +333,9 @@ def CT_UI():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption='Uploaded Image')
-        
-        input_tensor, bbox = preprocess_image_CT(image)
-        x, y, w, h = bbox
-        cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        cv2.rectangle(cv_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        processed_image = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB))
-        st.image(processed_image, caption='Detected Region with Bounding Box')
-
-
-        # input_tensor = preprocess_image_CT(image)
         st.write("Classifying...")
+        
+        input_tensor = preprocess_image_CT(image)
         with torch.no_grad():
             output = Main_model(input_tensor)
             Mian_prediction = output.item()
