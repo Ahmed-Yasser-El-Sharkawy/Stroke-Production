@@ -333,9 +333,17 @@ def CT_UI():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption='Uploaded Image')
-        st.write("Classifying...")
+        
+        input_tensor, bbox = preprocess_image_CT(image)
+        x, y, w, h = bbox
+        cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        cv2.rectangle(cv_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        processed_image = Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB))
+        st.image(processed_image, caption='Detected Region with Bounding Box')
 
-        input_tensor = preprocess_image_CT(image)
+
+        # input_tensor = preprocess_image_CT(image)
+        st.write("Classifying...")
         with torch.no_grad():
             output = Main_model(input_tensor)
             Mian_prediction = output.item()
