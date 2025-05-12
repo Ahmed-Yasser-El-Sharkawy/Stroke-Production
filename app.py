@@ -326,7 +326,7 @@ def CT_UI():
     st.title("Stroke CT Classifier")
     st.write("Upload an image to classify it as Normal or Stroke.")
 
-    main_class_names = ["Normal", "Stroke 🧠 🧠"]
+    main_class_names = ["Normal", "Stroke 🧠"]
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -347,7 +347,7 @@ def CT_UI():
         st.write(f"**Confidence:** {confidence:.4f}")
         
         # If the main prediction is "Stroke", run the sub-classifier
-        if main_class_names[Mian_predicted_class] == 'Stroke':
+        if main_class_names[Mian_predicted_class] == 'Stroke 🧠':
             st.write("**Sub-Class Classifier:**")
             sub_model = Sub_Class_CNNModel_CT()
             sub_model.load_state_dict(torch.load('CT/cnn_model_sub_class.pth', map_location=torch.device('cpu')))
