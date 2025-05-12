@@ -112,7 +112,20 @@ class TextRegionDetector:
             return image[y:y+h, x:x+w]
         return image
     
-    
+ class TextRegionDetector:
+    def __init__(self):
+        pass
+
+    def crop_text_region(self, img):
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        if contours:
+            x, y, w, h = cv2.boundingRect(contours[0])
+            return img[y:y+h, x:x+w], (x, y, w, h)
+        return img, (0, 0, img.shape[1], img.shape[0])
+           
 def preprocess_image_MRI(img, size=(224, 224)):
     img = img.convert('L')
     transform = transforms.Compose([
