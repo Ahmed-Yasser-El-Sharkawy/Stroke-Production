@@ -175,7 +175,7 @@ def MRI_UI():
     st.title("Stroke MRI Classifier")
     st.write("Upload an image to classify it as Normal or Stroke.")
 
-    main_class_names = ["Normal", "Stroke"]
+    main_class_names = ["Normal", "Stroke 🧠"]
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -326,7 +326,7 @@ def CT_UI():
     st.title("Stroke CT Classifier")
     st.write("Upload an image to classify it as Normal or Stroke.")
 
-    main_class_names = ["Normal", "Stroke"]
+    main_class_names = ["Normal", "Stroke 🧠 🧠"]
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -363,10 +363,10 @@ def CT_UI():
                 sub_prediction = torch.argmax(sub_output, dim=1).item()
                 confidence = sub_output[0][sub_prediction].item()
                 
-            with torch.no_grad():
-                output = sub_model(input_tensor)  
-                sub_prediction = torch.argmax(output, dim=1).item()
-                confidence = output[0][sub_prediction].item()
+            # with torch.no_grad():
+            #     output = sub_model(input_tensor)  
+            #     sub_prediction = torch.argmax(output, dim=1).item()
+            #     confidence = output[0][sub_prediction].item()
 
 
             sub_predicted_class = 1 if sub_prediction >= 0.5 else 0
